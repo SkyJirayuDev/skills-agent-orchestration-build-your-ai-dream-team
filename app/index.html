@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Pulse</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preload" href="project-data.json" as="fetch" crossorigin="anonymous" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="site-header">
+        <h1>Project Pulse</h1>
+        <p>Operations overview for active initiatives.</p>
+      </header>
+
+      <section aria-label="Project Dashboard">
+        <div id="state" class="state-message" role="status" aria-live="polite">Loading projects...</div>
+        <div id="dashboard" class="dashboard" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <script>
+      const dashboardElement = document.getElementById("dashboard");
+      const stateElement = document.getElementById("state");
+
+      const knownStatuses = new Set(["on-track", "at-risk", "blocked"]);
+      const knownPriorities = new Set(["low", "medium", "high", "critical"]);
+
+      function sanitizeToken(value) {
+        return String(value || "")
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+      }
+
+      function toLabel(value) {
+        return String(value || "unknown")
+          .replace(/[-_]+/g, " ")
+          .replace(/\b\w/g, (char) => char.toUpperCase());
+      }
+
+      function buildProjectCard(project) {
+        const name = project.name || "Unnamed Project";
+        const owner = project.owner || "Unassigned";
+
+        const statusToken = sanitizeToken(project.status);
+        const priorityToken = sanitizeToken(project.priority);
+
+        const statusValue = knownStatuses.has(statusToken) ? statusToken : "unknown";
+        const priorityValue = knownPriorities.has(priorityToken) ? priorityToken : "unknown";
+
+        const recentActivity = project.recentActivity || "No recent activity captured.";
+
+        const card = document.createElement("article");
+        card.className = "project-card";
+        card.tabIndex = 0;
+
+        const statusLabel = toLabel(statusValue);
+        const priorityLabel = toLabel(priorityValue);
+
+        card.innerHTML = `
+          <header>
+            <h2>${name}</h2>
+            <p class="project-owner">Owner: ${owner}</p>
+          </header>
+          <div class="badge-row">
+            <span class="badge status-badge status-${statusValue}">Status: ${statusLabel}</span>
+            <span class="badge priority-badge priority-${priorityValue}">Priority: ${priorityLabel}</span>
+          </div>
+          <p class="recent-activity">${recentActivity}</p>
+        `;
+
+        return card;
+      }
+
+      function showState(message) {
+        stateElement.hidden = false;
+        stateElement.textContent = message;
+      }
+
+      function hideState() {
+        stateElement.hidden = true;
+      }
+
+      async function loadProjects() {
+        try {
+          const response = await fetch("project-data.json", { cache: "no-store" });
+          if (!response.ok) {
+            throw new Error(`Request failed with ${response.status}`);
+          }
+
+          const payload = await response.json();
+          const projects = Array.isArray(payload.projects) ? payload.projects : [];
+
+          dashboardElement.innerHTML = "";
+
+          if (projects.length === 0) {
+            showState("No projects available yet.");
+            return;
+          }
+
+          const fragment = document.createDocumentFragment();
+          projects.forEach((project) => {
+            fragment.appendChild(buildProjectCard(project));
+          });
+          dashboardElement.appendChild(fragment);
+          hideState();
+        } catch (error) {
+          showState("Unable to load project data. Please try again later.");
+          console.error("Failed to load project data:", error);
+        }
+      }
+
+      loadProjects();
+    </script>
+  </body>
+</html>

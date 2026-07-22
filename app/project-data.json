@@ -1,0 +1,32 @@
+{
+  "projects": [
+    {
+      "name": "Atlas API Reliability",
+      "owner": "Mona",
+      "status": "on-track",
+      "recentActivity": "Resolved two P1 incidents and reduced error rate by 38% this sprint.",
+      "priority": "high"
+    },
+    {
+      "name": "Nimbus Billing Migration",
+      "owner": "Ibrahim",
+      "status": "at-risk",
+      "recentActivity": "Migration dry-run found schema mismatch in legacy invoice exports.",
+      "priority": "critical"
+    },
+    {
+      "name": "Helios Mobile Performance",
+      "owner": "Zara",
+      "status": "blocked",
+      "recentActivity": "Waiting on vendor SDK patch for startup crash on Android 15.",
+      "priority": "medium"
+    },
+    {
+      "name": "Orion Analytics Rollout",
+      "owner": "Luis",
+      "status": "on-track",
+      "recentActivity": "Completed region-2 rollout and enabled self-serve usage dashboard.",
+      "priority": "low"
+    }
+  ]
+}

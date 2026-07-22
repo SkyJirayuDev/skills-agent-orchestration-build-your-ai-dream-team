@@ -1,0 +1,205 @@
+:root {
+  --font-ui: "Plus Jakarta Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --bg-start: #f8fafc;
+  --bg-end: #dbeafe;
+  --surface: #ffffff;
+  --surface-border: #dbe3ef;
+  --text-primary: #0f172a;
+  --text-muted: #475569;
+  --shadow-soft: 0 12px 28px rgba(15, 23, 42, 0.12);
+  --shadow-hover: 0 18px 36px rgba(15, 23, 42, 0.16);
+  --radius-lg: 16px;
+  --radius-md: 999px;
+  --focus-ring: #0ea5e9;
+
+  --status-on-track-bg: #dcfce7;
+  --status-on-track-fg: #166534;
+  --status-at-risk-bg: #fef3c7;
+  --status-at-risk-fg: #92400e;
+  --status-blocked-bg: #fee2e2;
+  --status-blocked-fg: #991b1b;
+  --status-unknown-bg: #e2e8f0;
+  --status-unknown-fg: #334155;
+
+  --priority-low-bg: #e0f2fe;
+  --priority-low-fg: #0c4a6e;
+  --priority-medium-bg: #dbeafe;
+  --priority-medium-fg: #1e3a8a;
+  --priority-high-bg: #ffedd5;
+  --priority-high-fg: #9a3412;
+  --priority-critical-bg: #fde2e8;
+  --priority-critical-fg: #9f1239;
+  --priority-unknown-bg: #e2e8f0;
+  --priority-unknown-fg: #334155;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-ui);
+  color: var(--text-primary);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.18), transparent 45%),
+    radial-gradient(circle at 90% 10%, rgba(37, 99, 235, 0.12), transparent 40%),
+    linear-gradient(145deg, var(--bg-start), var(--bg-end));
+}
+
+.page {
+  width: min(1200px, calc(100% - 2.25rem));
+  margin: 0 auto;
+  padding: 2.25rem 0 2.75rem;
+}
+
+.site-header {
+  margin-bottom: 1.5rem;
+}
+
+.site-header h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+  letter-spacing: -0.02em;
+}
+
+.site-header p {
+  margin: 0.5rem 0 0;
+  color: var(--text-muted);
+}
+
+.dashboard {
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.1rem;
+}
+
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 1rem 1rem 1.1rem;
+  display: grid;
+  gap: 0.8rem;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.project-card h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.project-owner {
+  margin: 0.12rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.badge {
+  border-radius: var(--radius-md);
+  padding: 0.3rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-badge.status-on-track {
+  background: var(--status-on-track-bg);
+  color: var(--status-on-track-fg);
+}
+
+.status-badge.status-at-risk {
+  background: var(--status-at-risk-bg);
+  color: var(--status-at-risk-fg);
+}
+
+.status-badge.status-blocked {
+  background: var(--status-blocked-bg);
+  color: var(--status-blocked-fg);
+}
+
+.status-badge.status-unknown {
+  background: var(--status-unknown-bg);
+  color: var(--status-unknown-fg);
+}
+
+.priority-badge.priority-low {
+  background: var(--priority-low-bg);
+  color: var(--priority-low-fg);
+}
+
+.priority-badge.priority-medium {
+  background: var(--priority-medium-bg);
+  color: var(--priority-medium-fg);
+}
+
+.priority-badge.priority-high {
+  background: var(--priority-high-bg);
+  color: var(--priority-high-fg);
+}
+
+.priority-badge.priority-critical {
+  background: var(--priority-critical-bg);
+  color: var(--priority-critical-fg);
+}
+
+.priority-badge.priority-unknown {
+  background: var(--priority-unknown-bg);
+  color: var(--priority-unknown-fg);
+}
+
+.recent-activity {
+  margin: 0;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+.state-message {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px dashed var(--surface-border);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem;
+  color: var(--text-muted);
+}
+
+.state-message[hidden] {
+  display: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+.project-card:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .page {
+    width: min(1200px, calc(100% - 1.2rem));
+    padding-top: 1.35rem;
+  }
+
+  .dashboard {
+    gap: 0.85rem;
+  }
+}
